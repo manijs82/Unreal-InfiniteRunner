@@ -23,4 +23,4 @@
 
 ### How it works:
 #### Spawning platforms
-<img src="https://user-images.githubusercontent.com/57400375/233607813-d4cae418-cd44-48c4-ac5b-b8f292a82a63.jpg" alt="drawing" width="500"/>
+<img src="https://user-images.githubusercontent.com/57400375/233607813-d4cae418-cd44-48c4-ac5b-b8f292a82a63.jpg" alt="drawing" width="600"/>
