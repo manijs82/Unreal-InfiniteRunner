@@ -20,3 +20,7 @@
 
 ### Bugs:
 - if you hit an obstacle the pawn's position will reset and it might appear in a blank space.
+
+### How it works:
+#### Spawning platforms
+![Runner](https://user-images.githubusercontent.com/57400375/233607813-d4cae418-cd44-48c4-ac5b-b8f292a82a63.jpg)
