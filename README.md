@@ -6,8 +6,8 @@
 ### What it has:
 - Infinte Platform Generation
 - Two types of obstacles
-  -- A moving rock
-  -- A proceduraly generated door mesh
+  - A moving rock
+  - A proceduraly generated door mesh
 - Movement (move with AD or mouse)
 - Pause Menu (pause with M key)
 - 🌻
