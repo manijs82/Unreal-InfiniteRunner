@@ -19,6 +19,15 @@ class SMALLGAME_API ASG_PlayerState : public APlayerState
 public:
 	
 	virtual void BeginPlay() override;
-
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(BlueprintReadOnly)
+	float HighScore;
+
+protected:
+	UFUNCTION()
+	void SavePlayerState();
+	UFUNCTION()
+	void LoadPlayerState();
 };
