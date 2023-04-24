@@ -13,6 +13,7 @@
 - 🌻
 
 ### What it doesn't have:
+- Health
 - Increasing dificulty
 - Keeping track of high score
 - Move varried obstacles
