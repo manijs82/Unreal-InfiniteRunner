@@ -44,7 +44,17 @@ void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void APlayerBase::Hit()
 {
 	Health--;
-	SetActorLocation(StartLocation);
+	if(Health <= 0)
+	{
+		Die();	
+	}
+}
+
+void APlayerBase::Die()
+{
+	HorizontalSpeed = 0;
+	ForwardSpeed = 0;
+	OnDie.Broadcast();
 }
 
 void APlayerBase::MoveHorizontally(const FInputActionInstance& Instance)

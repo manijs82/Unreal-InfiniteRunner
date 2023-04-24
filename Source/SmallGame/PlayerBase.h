@@ -10,6 +10,8 @@
 #include "InputMappingContext.h"
 #include "PlayerBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDieEvent);
+
 UCLASS()
 class SMALLGAME_API APlayerBase : public APawn
 {
@@ -18,8 +20,12 @@ class SMALLGAME_API APlayerBase : public APawn
 public:
 	APlayerBase();
 
+	UPROPERTY(BlueprintAssignable, Category="Health")
+	FDieEvent OnDie;
 	UPROPERTY(EditAnywhere, Category = "Health")
 	int HitPoints;
+	UPROPERTY(BlueprintReadOnly)
+	int Health;
 	
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float HorizontalSpeed = 7;
@@ -37,15 +43,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	int Health;
 	FVector StartLocation;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
-
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	void Hit();
-
+	void Die();
 	void MoveHorizontally(const FInputActionInstance& Instance);
 };
