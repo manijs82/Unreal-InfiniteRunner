@@ -30,5 +30,5 @@ The PlatformSpawner spawns a GroundBlock (also a Spawnable) every time the next 
 The GroundBlock spawns a predefined amount of obstacles on top of it self. Choosing an obstacle is controlled by a probability system.
 
 #### Procedural mesh obstacle
-![ProceduralDoor](https://user-images.githubusercontent.com/57400375/233956819-25687f43-464f-47c0-856d-6c2aa569c4f9.jpg)
+<img src="https://user-images.githubusercontent.com/57400375/233956819-25687f43-464f-47c0-856d-6c2aa569c4f9.jpg" alt="drawing" width="600"/>
 One of the obstacle I have is a procedural mesh which creates 3 quads that will form a randomly placed door.
