@@ -44,7 +44,7 @@ void AMovingPlatform::SetRandomDistance()
 void AMovingPlatform::SetRandomYOffset()
 {
 	float maxOffset = Width / 2.f - Distance;
-	float yOffset = FMath::RandRange(-maxOffset, maxOffset);
+	float yOffset = GetActorLocation().Y + FMath::RandRange(-maxOffset, maxOffset);
 	
 	SetActorLocation(FVector(GetActorLocation().X, yOffset, GetActorLocation().Z));
 }

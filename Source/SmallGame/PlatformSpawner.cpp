@@ -29,14 +29,14 @@ void APlatformSpawner::InitFirstPlatforms()
 void APlatformSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DistanceToNextPlatform = FVector::Dist(FVector(NextIndex * layerDistance, 0, 300), PlayerActor->GetActorLocation());
+	DistanceToNextPlatform = FVector::Dist(FVector(NextIndex * layerDistance, GetActorLocation().Y, 300), PlayerActor->GetActorLocation());
 	if(DistanceToNextPlatform < SpawnDistanceThreshold)
 		SpawnPlatform();
 }
 
 void APlatformSpawner::SpawnPlatform()
 {
-	FVector pos = FVector(NextIndex * layerDistance, 0, 200);
+	FVector pos = FVector(NextIndex * layerDistance, GetActorLocation().Y, 200);
 	GetWorld()->SpawnActor<ASpawnable>(spawnItem, GetActorForwardVector() + pos, FRotator(0, 0, 0));
 	NextIndex++;
 }
