@@ -12,7 +12,7 @@ void APlatformSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), ControllerID);
 	ASmallGameGameModeBase* gameMode = Cast<ASmallGameGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(gameMode)
 		layerDistance = gameMode->TileHeight;

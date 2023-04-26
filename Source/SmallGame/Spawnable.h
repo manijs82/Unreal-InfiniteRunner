@@ -24,6 +24,7 @@ protected:
 	float DistanceFromPlayer;
 	float Width;
 	float DestroyDistanceThreshold;
+	int ControllerID = 0;
 
 public:
 	virtual void Tick(float DeltaTime) override;

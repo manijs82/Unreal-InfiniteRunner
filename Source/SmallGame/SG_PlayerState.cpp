@@ -20,7 +20,8 @@ void ASG_PlayerState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetScore(FVector::Distance(GetPawn()->GetActorLocation(), startPos) / 250.f);
+	if(GetPawn())
+		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), startPos) / 250.f);
 }
 
 void ASG_PlayerState::EndPlay(EEndPlayReason::Type EndPlayReason)

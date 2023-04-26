@@ -20,6 +20,8 @@ public:
 	int layerCount = 3;
 	UPROPERTY(EditAnywhere)
 	int SpawnDistanceThreshold = 1000;
+	UPROPERTY(EditAnywhere)
+	int ControllerID = 0;
 	int layerDistance = 300;
 
 protected:
