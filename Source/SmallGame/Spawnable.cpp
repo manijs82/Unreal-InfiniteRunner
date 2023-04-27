@@ -31,6 +31,8 @@ void ASpawnable::Tick(float DeltaTime)
 
 float ASpawnable::GetDistanceFromPlayer()
 {
+	if(!PlayerActor)
+		PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), ControllerID);
 	return PlayerActor->GetActorLocation().X - GetActorLocation().X;
 }
 

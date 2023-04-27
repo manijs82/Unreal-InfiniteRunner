@@ -25,20 +25,6 @@ void APlayerBase::Tick(float DeltaTime)
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	check(Input && PC);
-	Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerBase::MoveHorizontally);	
-	
-	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
-	check(LocalPlayer);
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
-	{
-		Subsystem->ClearAllMappings();
-		Subsystem->AddMappingContext(InputContext, 0);
-	}
-
 }
 
 void APlayerBase::Hit()

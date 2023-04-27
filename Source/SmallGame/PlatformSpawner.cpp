@@ -29,6 +29,8 @@ void APlatformSpawner::InitFirstPlatforms()
 void APlatformSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(!PlayerActor)
+		PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), ControllerID);
 	DistanceToNextPlatform = FVector::Dist(FVector(NextIndex * layerDistance, GetActorLocation().Y, 300), PlayerActor->GetActorLocation());
 	if(DistanceToNextPlatform < SpawnDistanceThreshold)
 		SpawnPlatform();

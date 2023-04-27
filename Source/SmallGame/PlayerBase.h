@@ -31,11 +31,6 @@ public:
 	float HorizontalSpeed = 7;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float ForwardSpeed = 3;
-	
-	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputMappingContext* InputContext;
-	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* MoveAction;
 
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* PlayerMesh;

@@ -33,5 +33,8 @@ public:
 	FVector Player1SpawnPos;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Players")
 	FVector Player2SpawnPos;
+
+private:
+	void AddPlayerToWorld(int index, TSubclassOf<APlayerBase> playerClass, FVector location);
 	
 };
