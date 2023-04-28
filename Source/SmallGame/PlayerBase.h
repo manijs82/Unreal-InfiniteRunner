@@ -11,6 +11,7 @@
 #include "PlayerBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDieEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHitEvent);
 
 UCLASS()
 class SMALLGAME_API APlayerBase : public APawn
@@ -22,6 +23,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Health")
 	FDieEvent OnDie;
+	UPROPERTY(BlueprintAssignable, Category="Health")
+	FHitEvent OnHit;
 	UPROPERTY(EditAnywhere, Category = "Health")
 	int HitPoints;
 	UPROPERTY(BlueprintReadOnly)

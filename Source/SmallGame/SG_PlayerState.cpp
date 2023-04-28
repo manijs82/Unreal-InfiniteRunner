@@ -11,8 +11,8 @@ void ASG_PlayerState::BeginPlay()
 	APlayerBase* pawn = Cast<APlayerBase>(GetPawn());
 	if(pawn)
 	{
-		startPos = pawn->GetActorLocation();
 		pawn->OnDie.AddDynamic(this, &ASG_PlayerState::SavePlayerState);
+		pawn->OnHit.AddDynamic(this, &ASG_PlayerState::DecreaseScore);
 	}
 }
 
@@ -21,7 +21,7 @@ void ASG_PlayerState::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	if(GetPawn())
-		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), startPos) / 250.f);
+		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), StartPosition) / 1000.f);
 }
 
 void ASG_PlayerState::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -45,4 +45,9 @@ void ASG_PlayerState::LoadPlayerState()
 		URunnerSave* runnerSave = Cast<URunnerSave>(UGameplayStatics::LoadGameFromSlot(TEXT("Save0"), 0));
 		HighScore = runnerSave->HighScore;
 	}
+}
+
+void ASG_PlayerState::DecreaseScore()
+{
+	SetScore(GetScore() - 1);
 }

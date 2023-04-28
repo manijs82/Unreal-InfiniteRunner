@@ -4,6 +4,7 @@
 #include "SmallGameGameModeBase.h"
 
 #include "PlayerBase.h"
+#include "SG_PlayerState.h"
 #include "TwoPlayerMover.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -39,6 +40,10 @@ void ASmallGameGameModeBase::AddPlayerToWorld(int index, TSubclassOf<APlayerBase
 
 		APawn* p1 = UGameplayStatics::GetPlayerPawn(GetWorld(), index);
 		if(p1)
+		{
 			p1->SetActorLocation(location);
+		 	ASG_PlayerState* state = Cast<ASG_PlayerState>(p1->GetPlayerState());
+			state->StartPosition = location;
+		}
 	}	
 }

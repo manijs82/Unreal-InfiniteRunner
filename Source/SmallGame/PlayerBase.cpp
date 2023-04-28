@@ -30,6 +30,7 @@ void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void APlayerBase::Hit()
 {
 	Health--;
+	OnHit.Broadcast();
 	if(Health <= 0)
 	{
 		Die();	

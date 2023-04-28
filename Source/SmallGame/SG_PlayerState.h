@@ -14,7 +14,6 @@ class SMALLGAME_API ASG_PlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
-	FVector startPos;
 	
 public:
 	
@@ -24,10 +23,14 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	float HighScore;
+	UPROPERTY(BlueprintReadOnly)
+	FVector StartPosition;
 
 protected:
 	UFUNCTION()
 	void SavePlayerState();
 	UFUNCTION()
 	void LoadPlayerState();
+	UFUNCTION()
+	void DecreaseScore();
 };
