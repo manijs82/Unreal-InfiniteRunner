@@ -25,7 +25,7 @@ public:
 	FDieEvent OnDie;
 	UPROPERTY(BlueprintAssignable, Category="Health")
 	FHitEvent OnHit;
-	UPROPERTY(EditAnywhere, Category = "Health")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Health")
 	int HitPoints;
 	UPROPERTY(BlueprintReadOnly)
 	int Health;
