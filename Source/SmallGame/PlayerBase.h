@@ -49,4 +49,6 @@ public:
 	void Hit();
 	void Die();
 	void MoveHorizontally(const FInputActionInstance& Instance);
+	UPROPERTY()
+	bool IsDead;
 };

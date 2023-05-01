@@ -28,12 +28,15 @@ public:
 	APlayerBase* Player1;
 	UPROPERTY()
 	APlayerBase* Player2;
+	UPROPERTY()
+	float ForwardSpeed = 5;
 
 protected:
 	virtual void BeginPlay() override;
 
 	void MovePlayerOne(const FInputActionInstance& Instance);
 	void MovePlayerTwo(const FInputActionInstance& Instance);
+	bool AreBothDead() const;
 	
 public:
 	virtual void Tick(float DeltaTime) override;

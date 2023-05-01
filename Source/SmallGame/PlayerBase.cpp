@@ -20,6 +20,8 @@ void APlayerBase::Tick(float DeltaTime)
 	FVector NewLocation = GetActorLocation();
 	NewLocation.X += ForwardSpeed;
 	SetActorLocation(NewLocation);
+	if(!IsDead)
+		ForwardSpeed += 0.05f * DeltaTime;
 }
 
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -39,6 +41,7 @@ void APlayerBase::Hit()
 
 void APlayerBase::Die()
 {
+	IsDead = true;
 	HorizontalSpeed = 0;
 	ForwardSpeed = 0;
 	OnDie.Broadcast();

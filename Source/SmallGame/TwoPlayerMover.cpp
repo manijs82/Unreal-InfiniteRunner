@@ -17,8 +17,12 @@ void ATwoPlayerMover::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FVector NewLocation = GetActorLocation();
-	NewLocation.X += 5.f;
-	SetActorLocation(NewLocation);
+	NewLocation.X += ForwardSpeed;
+	if(!AreBothDead())
+	{
+		SetActorLocation(NewLocation);
+		ForwardSpeed += 0.05f * DeltaTime;
+	}
 }
 
 void ATwoPlayerMover::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -58,5 +62,13 @@ void ATwoPlayerMover::MovePlayerTwo(const FInputActionInstance& Instance)
 		return;
 	}
 	Player2->MoveHorizontally(Instance);
+}
+
+bool ATwoPlayerMover::AreBothDead() const
+{
+	if(!Player1) return false;
+	if(!Player2) return false;
+	if(Player1->IsDead && Player2->IsDead) return true;
+	return false;
 }
 
