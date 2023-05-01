@@ -1,15 +1,16 @@
 #include "SG_PlayerState.h"
-#include "PlayerBase.h"
 #include "RunnerSave.h"
 #include "Kismet/GameplayStatics.h"
 
 void ASG_PlayerState::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+}
 
+void ASG_PlayerState::InitState(APlayerBase* pawn)
+{
 	LoadPlayerState();
-	APlayerBase* pawn = Cast<APlayerBase>(GetPawn());
-	if(pawn)
+	if (pawn)
 	{
 		pawn->OnDie.AddDynamic(this, &ASG_PlayerState::SavePlayerState);
 		pawn->OnHit.AddDynamic(this, &ASG_PlayerState::DecreaseScore);
@@ -20,8 +21,8 @@ void ASG_PlayerState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if(GetPawn())
-		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), StartPosition) / 1000.f);
+	if (GetPawn())
+		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), StartPosition) / 1000.f + ScoreOffset);
 }
 
 void ASG_PlayerState::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -32,22 +33,27 @@ void ASG_PlayerState::EndPlay(EEndPlayReason::Type EndPlayReason)
 
 void ASG_PlayerState::SavePlayerState()
 {
+	if (GetScore() < HighScore) return;
 	URunnerSave* runnerSave = Cast<URunnerSave>(UGameplayStatics::CreateSaveGameObject(URunnerSave::StaticClass()));
-	runnerSave->HighScore = GetScore();
+	runnerSave->HighScore = FMath::FloorToInt(GetScore());
 
-	UGameplayStatics::SaveGameToSlot(runnerSave, TEXT("Save0"), 0);
+	UGameplayStatics::SaveGameToSlot(
+		runnerSave, FString::FromInt(UGameplayStatics::GetPlayerControllerID(GetPlayerController())), 0);
 }
 
 void ASG_PlayerState::LoadPlayerState()
 {
-	if(UGameplayStatics::DoesSaveGameExist(TEXT("Save0"), 0))
+	if (UGameplayStatics::DoesSaveGameExist(
+		FString::FromInt(UGameplayStatics::GetPlayerControllerID(GetPlayerController())), 0))
 	{
-		URunnerSave* runnerSave = Cast<URunnerSave>(UGameplayStatics::LoadGameFromSlot(TEXT("Save0"), 0));
+		URunnerSave* runnerSave = Cast<URunnerSave>
+		(UGameplayStatics::LoadGameFromSlot(
+			FString::FromInt(UGameplayStatics::GetPlayerControllerID(GetPlayerController())), 0));
 		HighScore = runnerSave->HighScore;
 	}
 }
 
 void ASG_PlayerState::DecreaseScore()
 {
-	SetScore(GetScore() - 1);
+	ScoreOffset--;
 }

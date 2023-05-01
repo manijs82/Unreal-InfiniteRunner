@@ -15,5 +15,6 @@ class SMALLGAME_API URunnerSave : public USaveGame
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
 	float HighScore;
 };

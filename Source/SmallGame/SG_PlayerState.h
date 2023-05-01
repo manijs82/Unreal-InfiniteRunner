@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerBase.h"
 #include "GameFramework/PlayerState.h"
 #include "SG_PlayerState.generated.h"
 
@@ -20,6 +21,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
+	void InitState(APlayerBase* pawn);
+	
 
 	UPROPERTY(BlueprintReadOnly)
 	float HighScore;
@@ -33,4 +36,6 @@ protected:
 	void LoadPlayerState();
 	UFUNCTION()
 	void DecreaseScore();
+
+	int ScoreOffset;
 };

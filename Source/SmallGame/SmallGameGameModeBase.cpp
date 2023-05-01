@@ -44,6 +44,7 @@ void ASmallGameGameModeBase::AddPlayerToWorld(int index, TSubclassOf<APlayerBase
 			p1->SetActorLocation(location);
 		 	ASG_PlayerState* state = Cast<ASG_PlayerState>(p1->GetPlayerState());
 			state->StartPosition = location;
+			state->InitState(Cast<APlayerBase>(p1));
 		}
 	}	
 }
