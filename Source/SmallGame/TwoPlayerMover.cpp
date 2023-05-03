@@ -22,6 +22,7 @@ void ATwoPlayerMover::Tick(float DeltaTime)
 	{
 		SetActorLocation(NewLocation);
 		ForwardSpeed += 0.05f * DeltaTime;
+		ForwardSpeed = FMath::Clamp(ForwardSpeed, 0, 12);
 	}
 }
 

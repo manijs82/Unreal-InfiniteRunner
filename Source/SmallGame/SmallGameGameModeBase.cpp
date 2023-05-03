@@ -18,33 +18,44 @@ void ASmallGameGameModeBase::BeginPlay()
 
 void ASmallGameGameModeBase::AddPlayerToWorld(int index, TSubclassOf<APlayerBase> playerClass, FVector location)
 {
+	if(APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), index))
+	{
+		ReplacePawn(index, playerClass, location, controller);
+		return;
+	}
+	
 	FString error;
 	ULocalPlayer* localPlayer = GetWorld()->GetGameInstance()->CreateLocalPlayer(index, error, true);
 	APlayerController* NewPlayerController = localPlayer->GetPlayerController(GetWorld());
 
 	if (NewPlayerController)
 	{
-		APawn* CreatedPlayer = NewPlayerController->GetPawn();
-
-		if(CreatedPlayer)
-		{
-			CreatedPlayer->Destroy();
-			NewPlayerController->UnPossess();
-		}
-		
-		APlayerBase* PlayerTwoInWorld = GetWorld()->SpawnActor<APlayerBase>(playerClass, location, FRotator::ZeroRotator);
-		if (PlayerTwoInWorld)
-		{
-			NewPlayerController->Possess(PlayerTwoInWorld);
-		}
-
-		APawn* p1 = UGameplayStatics::GetPlayerPawn(GetWorld(), index);
-		if(p1)
-		{
-			p1->SetActorLocation(location);
-		 	ASG_PlayerState* state = Cast<ASG_PlayerState>(p1->GetPlayerState());
-			state->StartPosition = location;
-			state->InitState(Cast<APlayerBase>(p1));
-		}
+		ReplacePawn(index, playerClass, location, NewPlayerController);
 	}	
+}
+
+void ASmallGameGameModeBase::ReplacePawn(int index, TSubclassOf<APlayerBase> playerClass, FVector location, APlayerController* NewPlayerController)
+{
+	APawn* CreatedPlayer = NewPlayerController->GetPawn();
+
+	if(CreatedPlayer)
+	{
+		CreatedPlayer->Destroy();
+		NewPlayerController->UnPossess();
+	}
+		
+	APlayerBase* PlayerTwoInWorld = GetWorld()->SpawnActor<APlayerBase>(playerClass, location, FRotator::ZeroRotator);
+	if (PlayerTwoInWorld)
+	{
+		NewPlayerController->Possess(PlayerTwoInWorld);
+	}
+
+	APawn* p1 = UGameplayStatics::GetPlayerPawn(GetWorld(), index);
+	if(p1)
+	{
+		p1->SetActorLocation(location);
+		ASG_PlayerState* state = Cast<ASG_PlayerState>(p1->GetPlayerState());
+		state->StartPosition = location;
+		state->InitState(Cast<APlayerBase>(p1));
+	}
 }

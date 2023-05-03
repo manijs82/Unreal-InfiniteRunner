@@ -17,7 +17,9 @@ class SMALLGAME_API ASmallGameGameModeBase : public AGameModeBase
 
 public:
 	virtual void BeginPlay() override;
-	
+	void ReplacePawn(int index, TSubclassOf<APlayerBase> playerClass, FVector location,
+	                 APlayerController* NewPlayerController);
+
 	UPROPERTY(EditAnywhere, Category = "Game Params")
 	int TileWidth;
 	UPROPERTY(EditAnywhere, Category = "Game Params")

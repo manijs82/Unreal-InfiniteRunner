@@ -21,7 +21,10 @@ void APlayerBase::Tick(float DeltaTime)
 	NewLocation.X += ForwardSpeed;
 	SetActorLocation(NewLocation);
 	if(!IsDead)
+	{
 		ForwardSpeed += 0.05f * DeltaTime;
+		ForwardSpeed = FMath::Clamp(ForwardSpeed, 0, 12);
+	}
 }
 
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
