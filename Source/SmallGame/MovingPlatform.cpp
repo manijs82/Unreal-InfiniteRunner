@@ -1,4 +1,6 @@
 #include "MovingPlatform.h"
+
+#include "PlayerBase.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -8,32 +10,38 @@ AMovingPlatform::AMovingPlatform()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	Collider->SetCollisionProfileName(TEXT("Pawn"));
+	DamageVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	DamageVolume->SetCollisionProfileName(TEXT("Pawn"));
 	FVector size = FVector(1.5f, 1.5f, 1.5f);
-	Collider->SetRelativeScale3D(size);
-	RootComponent = Collider;
+	DamageVolume->SetRelativeScale3D(size);
+	RootComponent = DamageVolume;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(Collider);
+	Mesh->SetupAttachment(DamageVolume);
+	ScoreVolume1 = CreateDefaultSubobject<UBoxComponent>(TEXT("Score1"));
+	ScoreVolume1->SetupAttachment(DamageVolume);
+	ScoreVolume2 = CreateDefaultSubobject<UBoxComponent>(TEXT("Score2"));
+	ScoreVolume2->SetupAttachment(DamageVolume);
 }
 
 void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if(bSetRandomDistance)
+
+	if (bSetRandomDistance)
 		SetRandomDistance();
-	if(bSetRandomYOffset)
+	if (bSetRandomYOffset)
 		SetRandomYOffset();
-	if(bSetRandomSpeed)
+	if (bSetRandomSpeed)
 		SetRandomSpeed();
-	if(bSetRandomAxis)
+	if (bSetRandomAxis)
 		SetRandomAxis();
 
 	StartPos = GetActorLocation();
-	
-	Collider->OnComponentBeginOverlap.AddDynamic(this, &AMovingPlatform::OnOverlapBegin);
+
+	DamageVolume->OnComponentBeginOverlap.AddDynamic(this, &AMovingPlatform::OnOverlapBegin);
+	ScoreVolume1->OnComponentBeginOverlap.AddDynamic(this, &AMovingPlatform::OnOverlapScore);
+	ScoreVolume2->OnComponentBeginOverlap.AddDynamic(this, &AMovingPlatform::OnOverlapScore);
 }
 
 void AMovingPlatform::SetRandomDistance()
@@ -45,8 +53,20 @@ void AMovingPlatform::SetRandomYOffset()
 {
 	float maxOffset = Width / 2.f - Distance;
 	float yOffset = GetActorLocation().Y + FMath::RandRange(-maxOffset, maxOffset);
-	
+
 	SetActorLocation(FVector(GetActorLocation().X, yOffset, GetActorLocation().Z));
+}
+
+void AMovingPlatform::OnOverlapScore(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                     const FHitResult& SweepResult)
+{
+	if (!OtherActor->IsA(APlayerBase::StaticClass())) return;
+
+	APlayerBase* player = Cast<APlayerBase>(OtherActor);
+	if (UGameplayStatics::GetPlayerControllerID(Cast<APlayerController>(player->GetController())) != ControllerID)
+		return;
+	player->Score();
 }
 
 void AMovingPlatform::SetRandomAxis()
@@ -86,5 +106,3 @@ FVector AMovingPlatform::GetNextPosition()
 
 	return nextPos;
 }
-
-

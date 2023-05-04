@@ -12,6 +12,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDieEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHitEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FScoreEvent);
 
 UCLASS()
 class SMALLGAME_API APlayerBase : public APawn
@@ -25,6 +26,8 @@ public:
 	FDieEvent OnDie;
 	UPROPERTY(BlueprintAssignable, Category="Health")
 	FHitEvent OnHit;
+	UPROPERTY(BlueprintAssignable, Category="Health")
+	FScoreEvent OnScore;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Health")
 	int HitPoints;
 	UPROPERTY(BlueprintReadOnly)
@@ -47,6 +50,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void Hit();
+	void Score();
 	void Die();
 	void MoveHorizontally(const FInputActionInstance& Instance);
 	UPROPERTY()

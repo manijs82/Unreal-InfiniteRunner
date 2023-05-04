@@ -14,6 +14,7 @@ void ASG_PlayerState::InitState(APlayerBase* pawn)
 	{
 		pawn->OnDie.AddDynamic(this, &ASG_PlayerState::SavePlayerState);
 		pawn->OnHit.AddDynamic(this, &ASG_PlayerState::DecreaseScore);
+		pawn->OnScore.AddDynamic(this, &ASG_PlayerState::IncreaseScore);
 	}
 }
 
@@ -22,7 +23,7 @@ void ASG_PlayerState::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	if (GetPawn())
-		SetScore(FVector::Distance(GetPawn()->GetActorLocation(), StartPosition) / 1000.f + ScoreOffset);
+		SetScore(ScoreOffset);
 }
 
 void ASG_PlayerState::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -56,4 +57,9 @@ void ASG_PlayerState::LoadPlayerState()
 void ASG_PlayerState::DecreaseScore()
 {
 	ScoreOffset--;
+}
+
+void ASG_PlayerState::IncreaseScore()
+{
+	ScoreOffset++;
 }

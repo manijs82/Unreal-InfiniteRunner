@@ -1,5 +1,9 @@
 #include "ProceduralObstacle.h"
 
+#include "PlayerBase.h"
+#include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 AProceduralObstacle::AProceduralObstacle()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -8,6 +12,9 @@ AProceduralObstacle::AProceduralObstacle()
 	ProceduralMesh->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	ProceduralMesh->SetGenerateOverlapEvents(true);
 	ProceduralMesh->SetupAttachment(GetRootComponent());
+	ScoreVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("Score1"));
+	ScoreVolume->SetupAttachment(ProceduralMesh);
+	ScoreVolume->SetBoxExtent(FVector(5, 150, 250));
 }
 
 void AProceduralObstacle::BeginPlay()
@@ -31,7 +38,10 @@ void AProceduralObstacle::BeginPlay()
 
 	ProceduralMesh->SetMaterial(0, Material);
 
+	ScoreVolume->SetRelativeLocation(FVector(0, startY2 - 150, 250));
+	
 	ProceduralMesh->OnComponentBeginOverlap.AddDynamic(this, &AProceduralObstacle::OnOverlapBegin);
+	ScoreVolume->OnComponentBeginOverlap.AddDynamic(this, &AProceduralObstacle::OnOverlapScore);
 }
 
 void AProceduralObstacle::AddQuad(TArray<FVector>& vertices, TArray<int>& triangles, TArray<FVector2D>& uvs,
@@ -67,4 +77,15 @@ void AProceduralObstacle::AddQuad(TArray<FVector>& vertices, TArray<int>& triang
 void AProceduralObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AProceduralObstacle::OnOverlapScore(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (!OtherActor->IsA(APlayerBase::StaticClass())) return;
+
+	APlayerBase* player = Cast<APlayerBase>(OtherActor);
+	if (UGameplayStatics::GetPlayerControllerID(Cast<APlayerController>(player->GetController())) != ControllerID)
+		return;
+	player->Score();
 }

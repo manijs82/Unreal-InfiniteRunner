@@ -36,6 +36,8 @@ protected:
 	void LoadPlayerState();
 	UFUNCTION()
 	void DecreaseScore();
+	UFUNCTION()
+	void IncreaseScore();
 
 	int ScoreOffset;
 };

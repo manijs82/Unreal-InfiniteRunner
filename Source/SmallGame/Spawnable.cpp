@@ -11,7 +11,6 @@ ASpawnable::ASpawnable()
 void ASpawnable::BeginPlay()
 {
 	Super::BeginPlay();
-	PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), ControllerID);
 	
 	ASmallGameGameModeBase* gameMode = Cast<ASmallGameGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(gameMode)
@@ -21,9 +20,18 @@ void ASpawnable::BeginPlay()
 	}
 }
 
+void ASpawnable::SetID(int ID)
+{
+	ControllerID = ID;
+	
+	PlayerActor = UGameplayStatics::GetPlayerPawn(GetWorld(), ControllerID);
+	Cast<APlayerBase>(PlayerActor)->OnScore.AddDynamic(this, &ASpawnable::DestroyWithChance);
+}
+
 void ASpawnable::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	TimeSinceSpawn += DeltaTime;
 	
 	DistanceFromPlayer = GetDistanceFromPlayer();
 	DestroyIfFar();
@@ -42,9 +50,17 @@ void ASpawnable::DestroyIfFar()
 		Destroy();
 }
 
+void ASpawnable::DestroyWithChance()
+{
+	if(FMath::RandRange(0.f, 1.f) < 0.25f && TimeSinceSpawn < 10.f)
+	{
+		Destroy();
+	}
+}
+
 void ASpawnable::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-										 UPrimitiveComponent* OtherComp,
-										 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                UPrimitiveComponent* OtherComp,
+                                int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!OtherActor->IsA(APlayerBase::StaticClass())) return;
 

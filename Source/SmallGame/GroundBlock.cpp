@@ -14,6 +14,11 @@ void AGroundBlock::BeginPlay()
 	ASmallGameGameModeBase* gameMode = Cast<ASmallGameGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(gameMode)
 		Size = FVector(gameMode->TileHeight / 100, gameMode->TileWidth / 100, 1);
+}
+
+void AGroundBlock::SetID(int ID)
+{
+	Super::SetID(ID);
 	BlockInit();
 }
 
@@ -30,13 +35,14 @@ void AGroundBlock::BlockInit()
 		FVector location = FVector(x, GetActorLocation().Y, GetActorLocation().Z);
 		TSubclassOf<ASpawnable> spawnItem = UProbability::GetWeightedRandomElement(Obstacles, Probabilities);
 		ASpawnable* spawnable = world->SpawnActor<ASpawnable>(spawnItem, location, FRotator(0, 0, 0));
+		spawnable->SetID(ControllerID);
 		spawnable->SetWidth(Size.Y);
 	}
 }
 
 // Called every frame
+
 void AGroundBlock::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

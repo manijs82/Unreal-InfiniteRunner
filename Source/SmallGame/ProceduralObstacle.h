@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Spawnable.h"
 #include "ProceduralMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "ProceduralObstacle.generated.h"
 
 UCLASS()
@@ -18,6 +19,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UProceduralMeshComponent* ProceduralMesh;
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* ScoreVolume;
 
 private:
 	int QuadCount;
@@ -29,4 +32,8 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void OnOverlapScore(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+						int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

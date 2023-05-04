@@ -39,7 +39,9 @@ void APlatformSpawner::Tick(float DeltaTime)
 void APlatformSpawner::SpawnPlatform()
 {
 	FVector pos = FVector(NextIndex * layerDistance, GetActorLocation().Y, 200);
-	GetWorld()->SpawnActor<ASpawnable>(spawnItem, GetActorForwardVector() + pos, FRotator(0, 0, 0));
+	ASpawnable* spawnable =
+		GetWorld()->SpawnActor<ASpawnable>(spawnItem, GetActorForwardVector() + pos, FRotator(0, 0, 0));
+	spawnable->SetID(ControllerID);
 	NextIndex++;
 }
 

@@ -42,8 +42,15 @@ void APlayerBase::Hit()
 	}
 }
 
+void APlayerBase::Score()
+{
+	if(!IsDead)
+		OnScore.Broadcast();
+}
+
 void APlayerBase::Die()
 {
+	if(IsDead) return;
 	IsDead = true;
 	HorizontalSpeed = 0;
 	ForwardSpeed = 0;
